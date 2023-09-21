@@ -2,6 +2,7 @@ import requests
 import random
 import time
 
+from requests.exceptions import HTTPError
 from datetime import datetime
 from hidden import github_url
 
@@ -27,13 +28,24 @@ try:
         print(f"[***] Starting new GH bot run at run_count:{run_count}, max_loop:{max_loop}, rand_run_id:{rand_run_id} [{start_timestamp_str}]")
 
 
-        response = requests.get(f'{github_url}')
-        print(response)
+        response = requests.get(github_url)
+        # print(response.text)
+        # print(response.json)
 
-        time.sleep(2)
+        time.sleep(1)
 
 
+        print(f"[*] This run: {run_count} has finished!\n")
+
+        log = open(f"GITHUB_BOT_{current_date}_{rand_run_id}.txt", 'a')
+        log.write(f"run_count:{run_count} Start:[{start_timestamp_str}] max_loop:{max_loop} id:{rand_run_id} RESPONSE_HEADER:{response.headers} RESPONSE_BODY:{response.text}\n\n")
+        log.close()
+
+        response.raise_for_status()     # raises an Exception if an HTTP error occured
         run_count += 1
 
 except KeyboardInterrupt:       # press CTRL-C to exit while the bot is running
     print(f"[!] GH bot exited at run_count: {run_count}")
+
+except HTTPError as http_err:
+    print(f'[!] HTTP error occurred: {http_err} at run_count: {run_count}')
