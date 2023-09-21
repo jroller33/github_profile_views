@@ -6,34 +6,30 @@ from requests.exceptions import HTTPError
 from datetime import datetime
 from hidden import github_url
 
-# import pyautogui
-# import subprocess
-# import pygetwindow
 
-# from custom_functions import tab_sleep, tab_rand_sleep, space_rand_sleep, write_rand_sleep, down_rand_sleep, enter_rand_sleep, write_rs_tab_rs, for_tab_sleep_range, generate_email, generate_phone, generate_relationship, generate_address
-
-# from names import first_name_list, last_name_list
-
-run_count = 0
-# max_loop = random.choice(range(100,150))
-max_loop = 1
-rand_run_id = random.choice(range(1,10000))
+run_count = 0           # run_count starts at 0 and is incremented at the end of this loop
+max_loop = 5            # how many times the bot will run
+rand_run_id = random.choice(range(1,10000))     # used to identify a particular run in the log file. This ID is the same for all runs in one particular max_loop (ie this ID will be different each time this script runs overall, not each time the bot accesses the site)
 
 try:
-    while run_count <= max_loop:      # run_count starts at 0 and is incremented at the end of this loop
+    while run_count <= max_loop:      
 
+        # make a timestamp for this run, and print message
         start_now = datetime.now()
         start_timestamp_str = f'{start_now:%H.%M.%S_%m.%d.%Y}'
         current_date = f'{start_now:%m.%d.%Y}'
         print(f"[***] Starting new GH bot run at run_count:{run_count}, max_loop:{max_loop}, rand_run_id:{rand_run_id} [{start_timestamp_str}]")
 
 
+        # Get the response object from the url that's requested
         response = requests.get(github_url)
+
         # print(response.text)
         # print(response.json)
 
-        time.sleep(1)
+        time.sleep(1)       # let it finish loading
 
+        response.raise_for_status()     # raises an Exception if an HTTP error occured
 
         print(f"[*] This run: {run_count} has finished!\n")
 
@@ -41,11 +37,19 @@ try:
         log.write(f"run_count:{run_count} Start:[{start_timestamp_str}] max_loop:{max_loop} id:{rand_run_id} RESPONSE_HEADER:{response.headers} RESPONSE_BODY:{response.text}\n\n")
         log.close()
 
-        response.raise_for_status()     # raises an Exception if an HTTP error occured
         run_count += 1
 
 except KeyboardInterrupt:       # press CTRL-C to exit while the bot is running
     print(f"[!] GH bot exited at run_count: {run_count}")
 
-except HTTPError as http_err:
-    print(f'[!] HTTP error occurred: {http_err} at run_count: {run_count}')
+except HTTPError as http_err:   # logs any HTTP errors
+    print(f'[!] HTTP error occurred: {http_err}')
+    log = open(f"ERROR_LOG_GITHUB_BOT_{rand_run_id}.txt", 'a')
+    log.write(f"HTTP ERROR:[{http_err}] - run_count:{run_count} Start:[{start_timestamp_str}] max_loop:{max_loop} id:{rand_run_id}\n\n")
+    log.close()
+
+except Exception as err:        # logs any random errors
+    print(f'[!] Other error occurred: {err}')
+    log = open(f"ERROR_LOG_GITHUB_BOT_{rand_run_id}.txt", 'a')
+    log.write(f"OTHER ERROR:[{err}] - run_count:{run_count} Start:[{start_timestamp_str}] max_loop:{max_loop} id:{rand_run_id}\n\n")
+    log.close()
