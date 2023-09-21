@@ -24,9 +24,6 @@ try:
         # Get the response object from the url that's requested
         response = requests.get(github_url)
 
-        # print(response.text)
-        # print(response.json)
-
         time.sleep(1)       # let it finish loading
 
         if response:    # if the response is successful (response returns BOOL when it's in a conditional statement)
