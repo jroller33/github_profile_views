@@ -8,7 +8,7 @@ from hidden import github_url
 
 
 run_count = 0           # run_count starts at 0 and is incremented at the end of this loop
-max_loop = 5            # how many times the bot will run
+max_loop = 100            # how many times the bot will run
 rand_run_id = random.choice(range(1,10000))     # used to identify a particular run in the log file. This ID is the same for all runs in one particular max_loop (ie this ID will be different each time this script runs overall, not each time the bot accesses the site)
 
 try:
@@ -29,7 +29,10 @@ try:
 
         time.sleep(1)       # let it finish loading
 
-        response.raise_for_status()     # raises an Exception if an HTTP error occured
+        if response:    # if the response is successful (response returns BOOL when it's in a conditional statement)
+            print(f"[*] Response received successfully!")
+
+        response.raise_for_status()     # raises an Exception if an error occured
 
         print(f"[*] This run: {run_count} has finished!\n")
 
@@ -37,7 +40,9 @@ try:
         log.write(f"run_count:{run_count} Start:[{start_timestamp_str}] max_loop:{max_loop} id:{rand_run_id} RESPONSE_HEADER:{response.headers} RESPONSE_BODY:{response.text}\n\n")
         log.close()
 
-        run_count += 1
+        time.sleep(random.uniform(3,6))     # this is to make the timing of the requests harder to predict (if the requests are made at regular intervals, it's obvious they're coming from a bot)
+
+        run_count += 1      # increment the run count
 
 except KeyboardInterrupt:       # press CTRL-C to exit while the bot is running
     print(f"[!] GH bot exited at run_count: {run_count}")
