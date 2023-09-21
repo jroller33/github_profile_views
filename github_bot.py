@@ -6,14 +6,12 @@ from requests.exceptions import HTTPError
 from datetime import datetime
 from hidden import github_url
 
-
 run_count = 0           # run_count starts at 0 and is incremented at the end of this loop
 max_loop = 100            # how many times the bot will run
 rand_run_id = random.choice(range(1,10000))     # used to identify a particular run in the log file. This ID is the same for all runs in one particular max_loop (ie this ID will be different each time this script runs overall, not each time the bot accesses the site)
 
 try:
     while run_count <= max_loop:      
-
         # make a timestamp for this run, and print message
         start_now = datetime.now()
         start_timestamp_str = f'{start_now:%H.%M.%S_%m.%d.%Y}'
@@ -21,12 +19,11 @@ try:
         print(f"[***] Starting new GH bot run at run_count:{run_count}, max_loop:{max_loop}, rand_run_id:{rand_run_id} [{start_timestamp_str}]")
 
 
-        # Get the response object from the url that's requested
+        # Get the response object from the url that's requested, then sleep to finish loading
         response = requests.get(github_url)
+        time.sleep(1)
 
-        time.sleep(1)       # let it finish loading
-
-        if response:    # if the response is successful (response returns BOOL when it's in a conditional statement)
+        if response:    # response returns boolean when it's in a conditional statement
             print(f"[*] Response received successfully!")
 
         response.raise_for_status()     # raises an Exception if an error occured
