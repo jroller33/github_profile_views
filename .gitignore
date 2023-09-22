@@ -2,6 +2,7 @@ hidden.py
 targets.txt
 targets/
 old_log_files/
+log_files/
 
 .vscode
 (IGNORE)
