@@ -8,7 +8,7 @@ from hidden import github_url
 
 run_id = random.choice(range(1,100000))     # used to identify a particular run in the log file. This ID is the same for all runs in one particular max_loop (ie this ID will be different each time this script runs overall, not each time the bot accesses the site)
 
-max_loop = int(input("How many times do you want to run the GH bot? "))
+max_loop = int(input("\nHow many times do you want to run the GH bot? "))
 
 for run in range(max_loop):      
     try:
