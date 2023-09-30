@@ -31,7 +31,7 @@ for run in range(max_loop):
 
         print(f"[*] This run: {run} has finished!\n")
         log = open(f"log_files\GITHUB_BOT_{current_date}_{run_id}.txt", 'a')
-        log.write(f"run:{run} new profile view count:{count} Start:[{start_timestamp_str}] max_loop:{max_loop} run_id:{run_id} \nRESPONSE_HEADER:{response.headers} \nRESPONSE_BODY:{response.text}\n\n")
+        log.write(f"[run:{run}] [new profile view count:{count}] [Start:{start_timestamp_str}] [max_loop:{max_loop}] [run_id:{run_id}]\n\n")
         log.close()
 
         time.sleep(random.uniform(4,7))     # this is to make the timing of the requests harder to predict (if the requests are made at regular intervals, it's obvious they're coming from a bot)
