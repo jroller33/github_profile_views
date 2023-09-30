@@ -24,13 +24,15 @@ for run in range(max_loop):
         time.sleep(1)
 
         if response:    # response returns boolean when it's in a conditional statement
-            print(f"[*] Response received successfully!")
+            response_list = response.text.splitlines()
+            count = ((response_list[-3]).strip())[23:-7]        # takes the response object and strips everything except the profile count
+            print(f"[*] Response received! New profile view count: {count}")
 
         response.raise_for_status()     # raises an Exception if an error occured
 
         print(f"[*] This run: {run} has finished!\n")
         log = open(f"log_files\GITHUB_BOT_{current_date}_{run_id}.txt", 'a')
-        log.write(f"run:{run} Start:[{start_timestamp_str}] max_loop:{max_loop} run_id:{run_id} \nRESPONSE_HEADER:{response.headers} \nRESPONSE_BODY:{response.text}\n\n")
+        log.write(f"run:{run} new profile view count:{count} Start:[{start_timestamp_str}] max_loop:{max_loop} run_id:{run_id} \nRESPONSE_HEADER:{response.headers} \nRESPONSE_BODY:{response.text}\n\n")
         log.close()
 
         time.sleep(random.uniform(4,7))     # this is to make the timing of the requests harder to predict (if the requests are made at regular intervals, it's obvious they're coming from a bot)
