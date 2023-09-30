@@ -30,6 +30,8 @@ for run in range(max_loop):
         response.raise_for_status()     # raises an Exception if an error occured
 
         print(f"[*] This run: {run} has finished!\n")
+
+        # log the output from this run
         log = open(f"log_files\GITHUB_BOT_{current_date}_{run_id}.txt", 'a')
         log.write(f"[run:{run}] [new profile view count:{count}] [Start:{start_timestamp_str}] [max_loop:{max_loop}] [run_id:{run_id}]\n\n")
         log.close()
