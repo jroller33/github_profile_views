@@ -18,7 +18,6 @@ for run in range(max_loop):
         current_date = f'{start_now:%m.%d.%Y}'
         print(f"[***] Starting new GH bot run at run:{run}, max_loop:{max_loop}, run_id:{run_id} [{start_timestamp_str}]")
 
-
         # Get the response object from the url that's requested, then sleep to finish loading
         response = requests.get(github_url)
         time.sleep(1)
