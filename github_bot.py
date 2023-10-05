@@ -8,7 +8,11 @@ from hidden import github_url
 
 run_id = random.choice(range(1,100000))     # used to identify a particular run in the log file. This ID is the same for all runs in one particular max_loop (ie this ID will be different each time this script runs overall, not each time the bot accesses the site)
 
-max_loop = int(input("\nHow many times do you want to run the GH bot? "))
+response = requests.get(github_url)
+response_list = response.text.splitlines()
+count = ((response_list[-3]).strip())[23:-7]
+
+max_loop = int(input(f"\nCurrent profile views: {count}.\nHow many times do you want to run the GH bot? "))
 
 for run in range(max_loop):      
     try:
@@ -32,7 +36,7 @@ for run in range(max_loop):
         print(f"[*] This run: {run} has finished!\n")
 
         # log the output from this run
-        log = open(f"log_files\GITHUB_BOT_{current_date}_{run_id}.txt", 'a')
+        log = open(f"log_files\{current_date}_GITHUB_BOT_{run_id}.txt", 'a')
         log.write(f"[run:{run}] [new profile view count:{count}] [Start:{start_timestamp_str}] [max_loop:{max_loop}] [run_id:{run_id}]\n\n")
         log.close()
 
