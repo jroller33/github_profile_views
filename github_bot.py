@@ -1,3 +1,5 @@
+# github profile views bot
+
 import requests
 import random
 import time
@@ -13,6 +15,9 @@ response_list = response.text.splitlines()
 count = ((response_list[-3]).strip())[23:-7]
 
 max_loop = int(input(f"\nCurrent profile views: {count}.\nHow many times do you want to run the GH bot? "))
+
+
+
 
 for run in range(max_loop):      
     try:
